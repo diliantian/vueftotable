@@ -1,91 +1,74 @@
-# vue-admin-template
-
-English | [简体中文](./README-zh.md)
-
-> A minimal vue admin template with Element UI & axios & iconfont & permission control & lint
-
-**Live demo:** http://panjiachen.github.io/vue-admin-template
-
-
-**The current version is `v4.0+` build on `vue-cli`. If you want to use the old version , you can switch branch to [tag/3.11.0](https://github.com/PanJiaChen/vue-admin-template/tree/tag/3.11.0), it does not rely on `vue-cli`**
-
-## Build Setup
-
+```bash
+vue element-ui el-table进行二次封装，采用非侵入式封装。element-ui升级之后仍然可用。
+为什么要对进行二次封装？
+1 element-ui组件的部分样式不满足当前项目的需求
+2 产品要求排序方式只有asc，desc两个，不可取消排序。
+3 提高代码复用性
+```
 
 ```bash
 # clone the project
-git clone https://github.com/PanJiaChen/vue-admin-template.git
+git clone https://github.com/diliantian/vueftotable.git
+#建议不要用cnpm安装 会有各种诡异的bug 可以通过如下操作解决 npm 下载速度慢的问题
+npm install --registry=https://registry.npm.taobao.org
 
-# enter the project directory
-cd vue-admin-template
 
-# install dependency
-npm install
-
-# develop
-npm run dev
 ```
-
-This will automatically open http://localhost:9528
-
-## Build
-
 ```bash
-# build for test environment
-npm run build:stage
+  #全局引用import ftoTable from '@/components/ftotable/index';
+  Vue.component('ftoTable', ftoTable);
 
-# build for production environment
-npm run build:prod
+    <ftoTable
+      stripe
+      border
+      @cell-click="handleitemChange"
+      :ajaxConfig="ajaxConfig"
+      :Action="Action"
+      height="250"
+      @sort-change="sorthandle"
+      :default-sort="sortMap"
+      :columns="tableHeadData"
+    >
+      <template v-slot:first>
+        <el-table-column label="序号" type="index" width="50"></el-table-column>
+      </template>
+    </ftoTable>
+
+    export default {
+        data() {
+            return {
+
+                  tableHeadData: [
+                        {
+                        prop: "author",
+                        label: "作者",
+                        className: "allowclick",
+                        allowclick: true //允许下钻
+                        },
+                        {
+                        prop: "display_time",
+                        label: "时间",
+                        sortable: "custom",
+                        className: "allowclick",
+                        allowclick: true
+                        },
+                        {
+                        prop: "status",
+                        label: "状态",
+                        sortable: "custom"
+                        }
+                    ],
+                      ajaxConfig: {
+                        requestapi: getList,# getList=>function 查询数据接口
+                        dataKey: "items"
+                    },
+            }
+        }
+
+    }
+
+    #columns 表头 必填项
+    #ajaxConfig 选填
+    #Action: "" // Action=>query 执行查询 选填
+    #除了这3个参数，其他用法与el-table api完成一致,妈妈再也不用担心element-ui 属性和方法更新了！
 ```
-
-## Advanced
-
-```bash
-# preview the release environment effect
-npm run preview
-
-# preview the release environment effect + static resource analysis
-npm run preview -- --report
-
-# code format check
-npm run lint
-
-# code format check and auto fix
-npm run lint -- --fix
-```
-
-Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) for more information
-
-## Demo
-
-![demo](https://github.com/PanJiaChen/PanJiaChen.github.io/blob/master/images/demo.gif)
-
-## Extra
-
-If you want router permission && generate menu by user roles , you can use this branch [permission-control](https://github.com/PanJiaChen/vue-admin-template/tree/permission-control)
-
-For `typescript` version, you can use [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
-
-## Related Project
-
-- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
-
-- [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
-
-- [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template)
-
-- [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
-
-## Browsers support
-
-Modern browsers and Internet Explorer 10+.
-
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
-| --------- | --------- | --------- | --------- |
-| IE10, IE11, Edge| last 2 versions| last 2 versions| last 2 versions
-
-## License
-
-[MIT](https://github.com/PanJiaChen/vue-admin-template/blob/master/LICENSE) license.
-
-Copyright (c) 2017-present PanJiaChen
