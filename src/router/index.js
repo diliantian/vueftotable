@@ -36,6 +36,18 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/edittable',
+    component: Layout,
+    redirect: '/edittable',
+    children: [{
+      path: '/edittable',
+      name: 'Dashboard',
+      component: () => import('@/views/page/edittable'),
+      meta: { title: '可编辑表格', icon: 'edittable' }
+    }]
+  },
+  //edittable
+  {
     path: 'external-link',
     component: Layout,
     children: [
